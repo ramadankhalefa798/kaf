@@ -17,13 +17,12 @@ class teacher extends Migration
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
             $table->string('f_name');
-            $table->string('l_name');
-            $table->string('username')->unique();
+            $table->string('l_name')->nullable();
             $table->string('email')->unique();
-            $table->string('phone')->unique()->nullable();
+            $table->string('phone')->nullable();
             $table->string('password');
             $table->string('national_id')->unique();
-            $table->string('Bank_account_number')->unique()->nullable();
+            $table->string('Bank_account_number')->nullable();
             $table->text('photo')->nullable();
             $table->text('fcm_token')->nullable();
             $table->boolean('mobile_id')->comment('0 for android, 1 for ios')->nullable();

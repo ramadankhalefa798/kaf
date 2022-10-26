@@ -23,14 +23,13 @@ class AuthController extends Controller
     {
         $validate = Validator::make($request->all(), [
             'f_name'                => 'required|string|min:3|max:20',
-            'l_name'                => 'required|string|min:3|max:20',
-            'username'              => 'required|unique:users,username',
+            'l_name'                => 'nullable|string|min:3|max:20',
             'email'                 => 'required|email|unique:users,email',
-            'phone'                 => 'required|min:6|max:20|unique:users,phone',
+
             'password_confirmation'     => 'required|string|min:6|max:190',
             'password'              => 'required|string|min:6|max:190|confirmed',
             'national_id'           => 'required|unique:users,national_id',
-            'Bank_account_number'   => 'nullable|string',
+
             'photo'                 => 'nullable|image'
         ]);
         if ($validate->fails()) {
@@ -48,17 +47,15 @@ class AuthController extends Controller
 
         $user = new User();
         $user->f_name = $request->f_name;
-        $user->l_name = $request->l_name;
-        $user->username = $request->username;
+        $user->l_name = $request->l_name ?? '';
         $user->email = $request->email;
         $user->phone = $request->phone;
         $user->password = bcrypt($request->password);
         $user->national_id = $request->national_id;
-        $user->Bank_account_number = $request->Bank_account_number ?? '';
         $user->photo = $cover_name;
         $user->save();
 
-        $credentials = request(['username', 'password']);
+        $credentials = request(['national_id', 'password']);
 
         return $this->tokenization($credentials, $msg = "registered");
     }
@@ -68,7 +65,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'username' => 'required|string|max:190',
+            'national_id' => 'required|string|max:190',
             'password' => 'required|string|max:190',
         ]);
 
@@ -77,7 +74,7 @@ class AuthController extends Controller
             return $this->returnValidationError($code, $validate);
         }
 
-        $credentials = request(['username', 'password']);
+        $credentials = request(['national_id', 'password']);
 
         return $this->tokenization($credentials, $msg = "logged_in");
     }
