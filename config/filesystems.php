@@ -56,9 +56,9 @@ return [
             'visibility' => 'public',
         ],
 
-        'advertisments' => [
+        'books' => [
             'driver' => 'local',
-            'root' => public_path('assets/images/advertisments'),
+            'root' => public_path('uploads/book/file'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],

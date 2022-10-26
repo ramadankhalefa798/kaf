@@ -43,6 +43,7 @@ Route::group(['namespace' => 'Admin\Auth'] , function () {
     Route::post('/user/destroy/','UserController@destroy')->name('admin.userdestroy');
 
     //liberary opreation
+    Route::get('/liberary/download-pdf/{id}','liberaryController@downloadPdf')->name('admin.download_pdf');
     Route::get('/liberary','liberaryController@index')->name('admin.liberary');
     Route::get('/liberary/createbook','liberaryController@create')->name('admin.createbook');
     Route::post('/liberary/storebook','liberaryController@store')->name('admin.storeebook');

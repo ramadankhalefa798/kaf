@@ -13,15 +13,35 @@ use App\Models\setting\Semester;
 class Book extends Model
 {
     //
-    protected $table='books';
-    protected $guarded=[];
+    protected $table = 'books';
+    protected $guarded = [];
+
+
+
+    // Get File Path
+    public function  getFileAttribute($file)
+    {
+        if ($file != null) {
+            return asset('uploads/book/file/' . $file);
+        } else {
+            return '';
+        }
+    } // End of Get File Path
+
+
+
+
+
+
+
+
     public function bookcategory()
     {
         return $this->belongsTo(Bookcategory::class);
     }
     public function fileextention()
     {
-        return $this->belongsTo(Fileextension::class,'fileextension_id');
+        return $this->belongsTo(Fileextension::class, 'fileextension_id');
     }
     public function classe()
     {
@@ -39,6 +59,6 @@ class Book extends Model
 
     public function Pricesetting()
     {
-        return $this->belongsTo(Pricesetting::class,'price_id');
+        return $this->belongsTo(Pricesetting::class, 'price_id');
     }
 }

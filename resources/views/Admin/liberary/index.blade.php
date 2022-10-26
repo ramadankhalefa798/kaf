@@ -102,7 +102,11 @@
                 <a href="{{route('admin.changestatus.book',[$book->id,'true'])}}"> <i class="fa-solid fas fa-times"></i>  </a>
                 @endif
 
-                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    
+                   {{--  <a href="{{route('admin.download_pdf',$book->id)}}"> <i class="fa-solid fa-cloud-arrow-up"></i> </a>  --}}
+                   <a href="{{$book->file}}" target="_blank"> <i class="fa-solid fa-cloud-arrow-up"></i> </a>
+
+
                    <a href="{{route('admin.editbook',$book->id)}}"> <i class="fa-solid fa-pen-to-square"></i> </a>
                     <form action="{{route('book.destroy')}}" method="post">
                         @csrf

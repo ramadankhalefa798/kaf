@@ -26,8 +26,8 @@ class AuthController extends Controller
             'l_name'                => 'nullable|string|min:3|max:20',
             'email'                 => 'required|email|unique:users,email',
 
-            'password_confirmation'     => 'required|string|min:6|max:190',
-            'password'              => 'required|string|min:6|max:190|confirmed',
+            // 'password_confirmation'     => 'required|string|min:6|max:190',
+            // 'password'              => 'required|string|min:6|max:190|confirmed',
             'national_id'           => 'required|unique:users,national_id',
 
             'photo'                 => 'nullable|image'
@@ -50,14 +50,22 @@ class AuthController extends Controller
         $user->l_name = $request->l_name ?? '';
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->password = bcrypt($request->password);
+        // $user->password = bcrypt($request->password);
         $user->national_id = $request->national_id;
         $user->photo = $cover_name;
         $user->save();
 
-        $credentials = request(['national_id', 'password']);
+       
 
-        return $this->tokenization($credentials, $msg = "registered");
+        if (!$user_token = JWTAuth::fromUser($user)) {
+            return $this->returnError('404', __('Token dosn\'t generated.'));
+        }
+        JWTAuth::setToken($user_token)->toUser();
+        
+        $user['token'] = $user_token;
+        $user['token_type'] = 'bearer';
+        return $this->returnData('user', $user, __('Registered'));
+
     }
 
 
@@ -66,7 +74,6 @@ class AuthController extends Controller
     {
         $validate = Validator::make($request->all(), [
             'national_id' => 'required|string|max:190',
-            'password' => 'required|string|max:190',
         ]);
 
         if ($validate->fails()) {
@@ -74,16 +81,29 @@ class AuthController extends Controller
             return $this->returnValidationError($code, $validate);
         }
 
-        $credentials = request(['national_id', 'password']);
 
-        return $this->tokenization($credentials, $msg = "logged_in");
+        $user = User::where(['national_id'=> $request->national_id])->first();
+        if (!$user) {
+            return $this->returnError('404', __('app/public.user_not_exists'));
+        }
+
+        
+        if (!$user_token = JWTAuth::fromUser($user)) {
+            return $this->returnError('404', __('Token dosn\'t generated.'));
+        }
+        JWTAuth::setToken($user_token)->toUser();
+        
+        $user['token'] = $user_token;
+        $user['token_type'] = 'bearer';
+        return $this->returnData('user', $user, __('Registered'));
+
     }
 
 
 
     public function tokenization($credentials, $msg = "logged_in")
     {
-        try {
+        // try {
             if (!$token = auth()->guard('api')->attempt($credentials)) {
                 return $this->returnError('404', __('User not exists.'));
             } else {
@@ -92,9 +112,9 @@ class AuthController extends Controller
                 $user['token_type'] = 'bearer';
                 return $this->returnData('user', $user, __($msg));
             }
-        } catch (\Throwable $th) {
-            return $this->returnError('404', __('try_catch_error'));
-        }
+        // } catch (\Throwable $th) {
+        //     return $this->returnError('404', __('try_catch_error'));
+        // }
     }
 
 
