@@ -113,6 +113,7 @@ class liberaryController extends Controller
 
     public function search(Request $request)
     {
+        // return $request;
         $acadimicyears = Acadimicyear::paginate(20);
         $Semesters = Semester::paginate(20);
         $classes = Classe::paginate(20);

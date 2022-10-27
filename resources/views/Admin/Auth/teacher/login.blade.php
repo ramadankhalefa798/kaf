@@ -21,13 +21,13 @@
 
             <p class="title">تسجيل الدخول</p>
             <div class="type">
-                {{--  <button id="teacher-btn" class="active">معلم</button>  --}}
-                <button id="manager-btn"class="active">مدير النظام</button>
+                <button id="teacher-btn" class="active">معلم</button>
+                {{--  <button id="manager-btn">مدير النظام</button>  --}}
             </div>
-            {{--  <div id="teacher">
-                <img src="assets/img/teacher-qr.png" alt="تسجيل دخول المعلم">
-            </div>  --}}
-            <div id="manager">
+            <div id="teacher">
+                <img src="{{ asset('assets/img/teacher-qr.png') }}" alt="تسجيل دخول المعلم">
+            </div>
+            {{--  <div id="manager">
                 <form  action="{{route('admin.Submitlogin')}}" method="post">
                         @csrf
                         <input type="text" name="username" placeholder="اسم المستخدم">
@@ -38,7 +38,7 @@
                         <a href="{{route('admin.forgetpassword')}}">هل نسيت كلمة السر؟</a>
                         <input type="submit" value="دخول">
                 </form>
-            </div>
+            </div>  --}}
         </div>
     </div>
     @if ($errors->any())
