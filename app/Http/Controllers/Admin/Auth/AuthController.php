@@ -21,10 +21,17 @@ class AuthController extends Controller
     // }
 
     public function login(){
-        return view('Admin.Auth.login');
+        $code = random_int(100000, 999999);
+        return view('Admin.Auth.login' , compact('code'));
     }
     public function Submitlogin(Request $request){
-        //dd($request->all());
+        // return $request;
+
+        if($request->code != $request->user_code){
+            // return 'ssds';
+            return redirect()->back()->with('error','كود خاطئ');
+        }
+
         $request->validate([
             'username' => 'required',
             'password' => 'required',
@@ -33,7 +40,7 @@ class AuthController extends Controller
         if (Auth::guard('admin')->attempt($credentials)) {
             return redirect()->route('admin.dashboard');
         }
-        return redirect("/login")->with('error','Login details are not valid');
+        return redirect()->back()->with('error','Login details are not valid');
     }
 
     public function forgetpassword(){

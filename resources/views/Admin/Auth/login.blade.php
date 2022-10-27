@@ -30,10 +30,16 @@
             <div id="manager">
                 <form  action="{{route('admin.Submitlogin')}}" method="post">
                         @csrf
-                        <input type="text" name="username" placeholder="اسم المستخدم">
+                        <input required type="text" name="username" placeholder="اسم المستخدم">
                         <div class="pass">
-                            <input type="password" name="password" placeholder="كلمة السر" id="passField">
+                            <input required type="password" name="password" placeholder="كلمة السر" id="passField">
                             <img src="{{asset('assets/img/eye-off.svg')}}" alt="إظهار \ إخفاء كلمة المرور" id="passImg">
+                        </div>
+                        <div class="pass" style="text-align: center;">
+                            {{--  <label for="">{{$code}}</label>  --}}
+                            <input style="width: 50%;margin: 10px 0px;text-align: center;" type="text" disabled name="code" value="{{$code}}">
+                            <input required type="text" style="background-color: (rgb(163, 197, 255) !important;" name="user_code" placeholder="ادخل الكود">
+                            <input  type="hidden" name="code" value="{{$code}}">
                         </div>
                         <a href="{{route('admin.forgetpassword')}}">هل نسيت كلمة السر؟</a>
                         <input type="submit" value="دخول">
@@ -41,6 +47,9 @@
             </div>
         </div>
     </div>
+    @if(Session::has('error'))
+    <li class="text-danger">{{Session::get('error')}}</li>
+@endif
     @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
