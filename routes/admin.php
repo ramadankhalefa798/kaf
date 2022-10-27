@@ -8,11 +8,11 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 //AdminController
 Route::group(['namespace' => 'Admin\Auth\Teacher'] , function () {
     
-    Route::group(['prefix' => 'teacher'] , function () {
+    // Route::group(['prefix' => 'teacher'] , function () {
     
-        Route::get('login','AuthController@login')->name('teacher.login');
+        Route::get('','AuthController@login')->name('teacher.login');
     
-    });
+    // });
 
 });
 
@@ -20,7 +20,7 @@ Route::group(['namespace' => 'Admin\Auth\Teacher'] , function () {
 //AdminController
 Route::group(['namespace' => 'Admin\Auth'] , function () {
 
-    Route::get('admin/login','AuthController@login')->name('admin.login');
+    Route::get('adminstrator','AuthController@login')->name('admin.login');
     Route::POST('/Admin/login','AuthController@Submitlogin')->name('admin.Submitlogin');
     Route::group(['middleware'=>'PreventBackHistory'],function(){
         Route::POST('/Admin/logout','AuthController@signout')->name('admin.signout');
